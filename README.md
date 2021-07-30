@@ -31,7 +31,7 @@ This project uses Python 3.6.3. The following libraries are necessary for runnin
 
 # Project Motivation <a name="motivation"></a>
 
-The main motivation was to apply all the knowledge from the Udacity DSNP. It was a challenge at first, but after trying and making mistakes, the final goal was achived.
+The main motivation was to apply all the knowledge from the Udacity DSNP. It was challenging at first, but after trying and making mistakes (and fixing them), the final goal was achived.
 
 # File Descriptions <a name="files"></a>
 
@@ -62,7 +62,7 @@ There is also the `plot` folder that contains different graphics of the platform
 
 # Results <a name="results"></a>
 
-The most important result is the web app that was created. In the "plot" folder you can see the interface and how it works.
+The most important result is the web app that was created. In the "plot" folder you can see the interface and how it works. You can also see the notebooks to get more details.
 
 Getting started: 
 
@@ -90,6 +90,12 @@ Then go to the following address by completing with your own *SPACEDOMAIN* and *
 ```
 https://SPACEID-3001.SPACEDOMAIN
 ```
+
+![image](https://user-images.githubusercontent.com/49656060/127645094-0378c288-2c4f-45c6-b7c6-f97c98b4030e.png)
+
+![image](https://user-images.githubusercontent.com/49656060/127645147-937699e0-846f-4bf3-8254-f2268efeb15d.png)
+
+
 Now, if you want to re-execute the `process_data.py` and `train_classifier.py` scripts, you must follow this nomenclature:
 
 ```
