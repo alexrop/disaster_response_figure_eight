@@ -13,6 +13,8 @@ from sklearn.externals import joblib
 from sqlalchemy import create_engine
 from sklearn.base import BaseEstimator, TransformerMixin
 
+nltk.download(['punkt', 'wordnet','stopwords', 'averaged_perceptron_tagger'])
+
 # StartingVerbExtractor class (later as a feature for the model)
 class StartingVerbExtractor(BaseEstimator, TransformerMixin):
     '''
