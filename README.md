@@ -51,7 +51,7 @@ disaster_response_pipeline
           |-- process_data.py
     |-- models
           |-- train_classifier.py
-          |-- classifier.pkl
+          |-- classifier.pkl (inside a rar file - In order to excecure the web app you must unzip it)
     |-- notebooks
           |-- 1. ETL Pipeline Preparation.ipynb
           |-- 2. ML Pipeline Preparation.ipynb
@@ -66,10 +66,11 @@ The most important result is the web app that was created. In the "plot" folder 
 
 Getting started: 
 
-1) Clone this repository
+1) Clone this repository and unzip the model 
 ```
 git clone https://github.com/alexrop/disaster_response_figure_eight.git
 ```
+then go to the models folder and unzip the classifier.pkl which is contain in a rar format (100 mb approx)
 
 2) Run the program
 
