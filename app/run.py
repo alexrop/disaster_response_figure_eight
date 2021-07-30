@@ -1,7 +1,7 @@
 import json
 import plotly
 import pandas as pd
-
+import numpy as np
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
@@ -26,11 +26,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///../data/disaster_process_data.db')
+df = pd.read_sql_table('disaster_process_data', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load("../models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -40,31 +40,55 @@ def index():
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
-    graphs = [
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
+   
+    # GRAPH 1
+    graph_one = []
+    
+    genre_counts = df.groupby('genre').count()['message']
+    genre_names = list(genre_counts.index)
+    
+    graph_one.append(
+        Bar(
+            x = genre_counts,
+            y = genre_names,
+            orientation = 'h'
+        )   
+    )
+    
+    layout_one = dict(title = 'Distribution of Messages per Genre',
+                      xaxis = dict(title = 'Count',),
+                      yaxis = dict(title = 'Genre',),
+    )
+    
+    # GRAPH 2
+    graph_two = []  
 
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        }
-    ]
+    category_counts_sorted =  np.sum(df.iloc[:,4:]).sort_values(ascending=False)
+    category_names = list(category_counts_sorted.index)
+    category_counts = list(category_counts_sorted)
+    
+    graph_two.append(
+        Bar(
+            x = category_names,
+            y = category_counts,
+        )   
+    )
+    
+    layout_two = dict(title = 'Distribution of Messages per Category',
+                      xaxis = dict(title = 'Category',),
+                      yaxis = dict(title = 'Count',),
+                      margin = dict(b = 200)
+    )
+    
+    
+    graphs = []
+    graphs.append(dict(data=graph_one, layout=layout_one))
+    graphs.append(dict(data=graph_two, layout=layout_two))
+
+
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
