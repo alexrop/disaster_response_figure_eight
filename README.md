@@ -89,8 +89,19 @@ Then go to the following address by completing with your own *SPACEDOMAIN* and *
 ```
 https://SPACEID-3001.SPACEDOMAIN
 ```
+Now, if you want to re-execute the `process_data.py` and `train_classifier.py` scripts, the nomenclature are:
 
-On the other hand, if you need more details about the ETL and ML Pipeline process, check the "notebook" folder,  where you can find a "step-by-step" explination about how we generate the final database and model.
+```
+python process_data.py disaster_messages.csv disaster_categories.csv disaster_process_data.db
+```
+
+```
+python train_classifier.py ../data/disaster_process_data.db classifier.pkl
+```
+The last one takes about 2 h aprox to be completed
+
+
+On the other hand, if you need more details about the ETL and ML Pipeline process, check the *notebook* folder,  where you can find a "step-by-step" explination about how we generate the final database and model.
 
 
 # Licensing, Authors, Acknowledgements <a name="licensing"></a>
