@@ -4,7 +4,7 @@ TRAIN CLASSIFIER
 To run this script:
 
 > disaster_response_figure_eight>.\project_env\Scripts\activate
-> (project_env) python train_classifier.py ../data/disaster_process_data.db classifier.pkl
+> (project_env) cd models > python train_classifier.py ../data/disaster_process_data.db classifier.pkl
 '''
 #---------------------------------------------------------------------------------------------
 # Import libraries
@@ -13,7 +13,6 @@ import pandas as pd
 import numpy as np
 import pickle 
 import re
-import sqlalchemy
 import nltk
 from nltk.corpus import stopwords
 from sqlalchemy import create_engine
@@ -40,7 +39,7 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
       It extract the starting verb from a sentence.
     
     '''
-
+    # Function that returs True if the sentence start with a Verb
     def starting_verb(self, text):
         sentences = nltk.sent_tokenize(text)
         for sent in sentences:
@@ -54,12 +53,16 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
             else:
                 return False
 
+    # Fit model (specially for CountVectorizer())
     def fit(self, X, y=None):
         return self
 
+    # Transform method
     def transform(self, X):
         X_tagged = pd.Series(X).apply(self.starting_verb)
-        return pd.DataFrame(X_tagged)
+        # We noticed that the X_tagged had 2 null values. We solved this by replacing nulls with fillna()
+        df = pd.DataFrame(X_tagged).fillna({'message': False})
+        return df
 
 #---------------------------------------------------------------------------------------------
 # Load data function
@@ -74,8 +77,11 @@ def load_data(database_filepath):
       - Y -> Target
       - category_names -> label of each category
     '''
+    # Conection and dataframe
     engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table("disaster_process_data", con=engine)
+
+    # Features and labels
     X = df['message']
     Y = df.iloc[:, 4:]
     category_names = Y.columns
@@ -126,7 +132,7 @@ def build_model():
     It creates a classifier and then look for the best one by iterating through different parameters
     
     '''
-    # Generating a pipeline that contains all functions and features
+    # Generating a pipeline that contains all functions and features, including the StartingVerbExtractor feature.
     pipeline = Pipeline([
         ('features', FeatureUnion([
 
@@ -145,9 +151,10 @@ def build_model():
     parameters = {
     'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
     #'features__text_pipeline__vect__max_df': (0.5, 1.0),
-    'clf__estimator__n_estimators' : [50,100]
+    #'clf__estimator__n_estimators' : [50,100]
     }
     
+    # Final model having the best parameters tested
     cv = GridSearchCV(pipeline, param_grid=parameters)
 
     return cv
@@ -168,15 +175,19 @@ def evaluate_model(model, X_test, Y_test, category_names):
       - Measures of each column and the overall accuracy
 
     '''
+    
+    import warnings
+    warnings.filterwarnings("ignore")
+
     y_pred = model.predict(X_test)
     
     # Iterating each column
     for i, col in enumerate(Y_test):
         # Printing the results for each variable
-        print('--------------------------------------------------------------')
         print(f'\033[1m{col}\033[0m')
         print(classification_report(Y_test[col], y_pred[:,i]))
     
+    # Overall accuracy (mean)
     accuracy = (y_pred == Y_test).mean().mean()
     print(f'\033[1mGeneral Accuracy: {accuracy}\033[0m')  
 
