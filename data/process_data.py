@@ -11,8 +11,6 @@ To run this script:
 import sys
 import pandas as pd
 import numpy as np
-import sqlite3
-import sqlalchemy
 from sqlalchemy import create_engine
 
 #---------------------------------------------------------------------------------------------
@@ -27,10 +25,13 @@ def load_data(messages_filepath, categories_filepath):
     Ouput:
       - A unified dataset
     '''
-
+    # Importing datasets
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
+
+    # Merging both datasets
     df = messages.merge(categories, how ='left', on =['id'])
+
     return df
 
 #---------------------------------------------------------------------------------------------
@@ -78,6 +79,7 @@ def save_data(df, database_filename):
     Ouput:
       - sql database
     '''
+    # Creating the engine and saving the database
     engine = create_engine(f'sqlite:///{database_filename}')
     df.to_sql('disaster_process_data', engine, index=False, if_exists='replace')   
 
