@@ -2,6 +2,7 @@ import json
 import plotly
 import pandas as pd
 import numpy as np
+import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
@@ -10,6 +11,36 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+from sklearn.base import BaseEstimator, TransformerMixin
+
+# StartingVerbExtractor class (later as a feature for the model)
+class StartingVerbExtractor(BaseEstimator, TransformerMixin):
+    '''
+    Class created.
+      Contains a transform function to incorporate in the model as a new feature. 
+      It extract the starting verb from a sentence.
+    
+    '''
+    def starting_verb(self, text):
+        sentences = nltk.sent_tokenize(text)
+        for sent in sentences:
+            pos_tags = nltk.pos_tag(tokenize(sent))
+            # If the list is empty (pos_tags = []) it returns automaticaly False
+            if len(pos_tags):
+                first_word, first_tag = pos_tags[0]
+                if first_tag in ['VB', 'VBP'] or first_word == 'RT':
+                    return True
+                return False
+            else:
+                return False
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        X_tagged = pd.Series(X).apply(self.starting_verb)
+        return pd.DataFrame(X_tagged)
+
 
 
 app = Flask(__name__)
@@ -87,7 +118,6 @@ def index():
     graphs = []
     graphs.append(dict(data=graph_one, layout=layout_one))
     graphs.append(dict(data=graph_two, layout=layout_two))
-
 
     
     # encode plotly graphs in JSON
