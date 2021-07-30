@@ -17,17 +17,17 @@ In this project we analyze disaster data from [Figure Eight](https://appen.com/)
 
 # Installation <a name="installation"></a>
 
-This project uses Python 3.8.3. The following libraries are necessary for running the files: 
+This project uses Python 3.6.3. The following libraries are necessary for running the files: 
 
-- numpy == 1.21.1
-- pandas == 1.3.1
-- re == 2.2.1
-- pickle == 4.0
-- nltk == 3.6.2
-- scikit-learn == 0.24.2
-- SQLAlchemy == 1.4.22
-- flask == 0.12.5
-- plotly == 2.0.15
+- numpy==1.12.1
+- pandas==0.23.3
+- re==2.2.1
+- pickle==4.0
+- nltk==3.2.5
+- scikit-learn==0.19.1
+- SQLAlchemy==1.2.19
+- flask==0.12.5
+- plotly==2.0.15
 
 # Project Motivation <a name="motivation"></a>
 
@@ -84,12 +84,12 @@ On terminal type:
 env|grep WORK
 ```
 
-Then go to the following address by completing with your own *SPACEDOMAIN* and *SPACEID*
+Then go to the following address by completing with your own *SPACEDOMAIN* and *SPACEID*. For example, in my case was *https://view6914b2f4-3001.udacity-student-workspaces.com/*
 
 ```
 https://SPACEID-3001.SPACEDOMAIN
 ```
-Now, if you want to re-execute the `process_data.py` and `train_classifier.py` scripts, the nomenclature are:
+Now, if you want to re-execute the `process_data.py` and `train_classifier.py` scripts, you must follow this nomenclature:
 
 ```
 python process_data.py disaster_messages.csv disaster_categories.csv disaster_process_data.db
@@ -98,10 +98,14 @@ python process_data.py disaster_messages.csv disaster_categories.csv disaster_pr
 ```
 python train_classifier.py ../data/disaster_process_data.db classifier.pkl
 ```
-The last one takes about 2 h aprox to be completed
+>The last one (train_classifier.py) takes around 2 h aprox to be completed
 
 
 On the other hand, if you need more details about the ETL and ML Pipeline process, check the *notebook* folder,  where you can find a "step-by-step" explination about how we generate the final database and model.
+
+> Note: This project was made on the *Udacity Project Workspace IDE platform* (Ubuntu based) so it might be some differences if you run it on Windows. Check that the package versions are the same that mine as I showed you above.
+
+![image](https://user-images.githubusercontent.com/49656060/127631805-febda984-8554-4906-9c81-efd6525f2c04.png)
 
 
 # Licensing, Authors, Acknowledgements <a name="licensing"></a>
